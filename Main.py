@@ -30,8 +30,12 @@ with configuration:
         dbxSchema = st.text_input('schema')
         dbxTable = st.text_input('table')
         dbxSqlPAT = st.text_input('PAT', type='password')
-        conn, cursor = dbx.connect(dbxSqlHost, dbxSqlHTTPS, dbxSqlPAT)
-        data = dbx.read(cursor,conn, dbxCatalogue, dbxSchema, dbxTable)
+        connectDbx = st.button('Connect DBX')
+        if connectDbx:
+            conn, cursor = dbx.connect(dbxSqlHost, dbxSqlHTTPS, dbxSqlPAT)
+            data = dbx.read(cursor,conn, dbxCatalogue, dbxSchema, dbxTable)
+        else:
+            pass
 
     if data is not None:
         if connType == 'Parquet':
@@ -58,9 +62,11 @@ with configuration:
                 if dsFreq is None:
                     st.write('Unable to infer frequency of date column, please input manually')
                     dsFreq = st.text_input('Frequency', value='M')
-                    st.button("Set Freq", type="primary")
-                    if st.button:
+                    setFreqButton = st.button("Set Freq", type="primary")
+                    if setFreqButton:
                         df = tsf.tsGaps(df, dsFreq)
+                    else:
+                        pass
 
                 # redundant
                 # else: 
