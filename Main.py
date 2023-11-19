@@ -5,6 +5,9 @@ from scipy.stats import beta
 import matplotlib.pyplot as plt
 import dbx as dbx
 import tsTransforms as tsf
+from databricks import sql
+import os
+
 
 st.title('Forecasting With Nixtla')
 
@@ -25,13 +28,17 @@ with configuration:
         dbxSqlHTTPS = st.text_input('https')
         dbxCatalogue = st.text_input('catalogue')
         dbxSchema = st.text_input('schema')
+        dbxTable = st.text_input('table')
         dbxSqlPAT = st.text_input('PAT', type='password')
+        conn, cursor = dbx.connect(dbxSqlHost, dbxSqlHTTPS, dbxSqlPAT)
+        data = dbx.read(cursor,conn, dbxCatalogue, dbxSchema, dbxTable)
 
     if data is not None:
-        if connType == ['Parquet']:
+        if connType == 'Parquet':
             df = pd.read_parquet(data)
-            st.write(df)
 
+        if connType == 'Databricks SQL':
+            df = pd.DataFrame(data)
 
         if df is not None:
             st.write(df.describe())
@@ -58,6 +65,8 @@ with configuration:
                 # redundant
                 # else: 
                 #     df = tsf.tsGaps(df, dsFreq)
+        
+            st.write(df)
 
                     
 
