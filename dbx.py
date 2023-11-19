@@ -1,5 +1,6 @@
 from databricks import sql
 import os
+import streamlit as st
 
 def connect(host,path,token):
     connection = sql.connect(
@@ -12,6 +13,7 @@ def connect(host,path,token):
 
     return connection, cursor
 
+@st.cache_data
 def read(cursor,connection,catalogue,schema,table):
 
     cursor.execute(f"SELECT * from {catalogue}.{schema}.{table}")
