@@ -33,7 +33,7 @@ with configuration:
         connectDbx = st.button('Connect DBX')
         if connectDbx:
             conn, cursor = dbx.connect(dbxSqlHost, dbxSqlHTTPS, dbxSqlPAT)
-            data = dbx.read(cursor,conn, dbxCatalogue, dbxSchema, dbxTable)
+            data,columns = dbx.read(cursor,conn, dbxCatalogue, dbxSchema, dbxTable)
         else:
             pass
 
@@ -43,6 +43,7 @@ with configuration:
 
         if connType == 'Databricks SQL':
             df = pd.DataFrame(data)
+            df.columns = columns
 
         if df is not None:
             st.write(df.describe())
