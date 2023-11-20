@@ -13,7 +13,7 @@ st.title('Forecasting With Nixtla')
 
 data = None
 df = None
-
+ds = None
 
 configuration, results = st.columns(2)
 
@@ -32,8 +32,8 @@ with configuration:
         dbxSqlPAT = st.text_input('PAT', type='password')
         connectDbx = st.button('Connect DBX')
         if connectDbx:
-            conn, cursor = dbx.connect(dbxSqlHost, dbxSqlHTTPS, dbxSqlPAT)
-            data,columns = dbx.read(cursor,conn, dbxCatalogue, dbxSchema, dbxTable)
+            conn, cursor = dbx.connect(dbxSqlHost, dbxSqlHTTPS, dbxCatalogue, dbxSqlPAT)
+            data, columnNames = dbx.read(conn, cursor, dbxCatalogue,dbxSchema, dbxTable)
         else:
             pass
 
@@ -42,8 +42,9 @@ with configuration:
             df = pd.read_parquet(data)
 
         if connType == 'Databricks SQL':
-            df = pd.DataFrame(data)
-            df.columns = columns
+            df = pd.DataFrame(data, columns=columnNames)
+            st.write(df)
+            # df.columns = columnNames
 
         if df is not None:
             st.write(df.describe())

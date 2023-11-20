@@ -2,10 +2,11 @@ from databricks import sql
 import os
 import streamlit as st
 
-def connect(host,path,token):
+def connect(host,path,catalogue,token):
     connection = sql.connect(
                         server_hostname = host,
                         http_path = path,
+                        catalog=catalogue,
                         access_token = token)
 
     cursor = connection.cursor()
@@ -14,12 +15,15 @@ def connect(host,path,token):
     return connection, cursor
 
 
-def read(cursor,connection,catalogue,schema,table):
+def read(connection, cursor, catalogue, schema, table):
+    cursor.execute(f"SELECT * FROM {catalogue}.{schema}.{table} LIMIT 1")
 
-    cursor.execute(f"SELECT * from {catalogue}.{schema}.{table}")
+    column_names = [description[0] for description in cursor.description]
+
+    cursor.execute(f"SELECT * FROM {catalogue}.{schema}.{table}")
     df = cursor.fetchall()
-    columns = cursor.columns(catalogue_name=catalogue, schema_name=schema, table_name=table)
-    cursor.close()
-    connection.close()
 
-    return df, columns
+    connection.close()
+    cursor.close()
+
+    return df, column_names
