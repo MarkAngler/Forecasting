@@ -14,16 +14,26 @@ def connect(host,path,catalogue,token):
 
     return connection, cursor
 
-
-def read(connection, cursor, catalogue, schema, table):
+def getColumns(cursor, catalogue, schema, table):
     cursor.execute(f"SELECT * FROM {catalogue}.{schema}.{table} LIMIT 1")
 
     column_names = [description[0] for description in cursor.description]
 
-    cursor.execute(f"SELECT * FROM {catalogue}.{schema}.{table}")
+
+    return column_names
+
+
+def read(connection, cursor, catalogue, schema, table, filter=None):
+
+
+    if filter != None:
+        print(f"SELECT * FROM {catalogue}.{schema}.{table} WHERE {filter}")
+        cursor.execute(f"SELECT * FROM {catalogue}.{schema}.{table} WHERE {filter}")
+    else:
+        cursor.execute(f"SELECT * FROM {catalogue}.{schema}.{table}")
     df = cursor.fetchall()
 
     connection.close()
     cursor.close()
 
-    return df, column_names
+    return df
