@@ -13,13 +13,13 @@ def connect(host,path,token):
 
     return connection, cursor
 
-@st.cache_data
+
 def read(cursor,connection,catalogue,schema,table):
 
     cursor.execute(f"SELECT * from {catalogue}.{schema}.{table}")
     df = cursor.fetchall()
-
+    columns = cursor.columns(catalogue_name=catalogue, schema_name=schema, table_name=table)
     cursor.close()
     connection.close()
 
-    return df
+    return df, columns
