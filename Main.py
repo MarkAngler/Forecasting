@@ -7,6 +7,7 @@ import dbx as dbx
 import tsTransforms as tsf
 from databricks import sql
 import os
+import selectionLists as sl
 
 
 
@@ -20,6 +21,22 @@ if 'df' not in st.session_state:
 
 if 'columnNames' not in st.session_state:
     st.session_state['columnNames'] = None
+
+if 'frequencyDict' not in st.session_state:
+    st.session_state['frequencyDict'] = sl.frequency_dict
+
+if 'dsInferredFreq' not in st.session_state:
+    st.session_state['dsInferredFreq'] = None
+
+# if 'frequencyKeys' not in st.session_state:
+#     st.session_state['frequencyKeys'] = None
+
+# if 'frequencyValues' not in st.session_state:
+#     st.session_state['frequencyValues'] = None
+
+# st.session_state['frequencyDict'] = sl.frequency_dict
+# st.session_state['frequencyKeys'] = list(sl.frequency_dict.keys())
+# st.session_state['frequencyValues'] = list(sl.frequency_dict.values())
 
 configuration, results = st.columns(2)
 
@@ -64,48 +81,25 @@ with configuration:
                 st.write(st.session_state['df'])
         
 
-            # if st.session_state['df'] is not None:
-            #     st.session_state['df'][ds] = pd.to_datetime(st.session_state['df'][ds])
+        if st.session_state['df'] is not None:
+            print('starting inference')
+            st.session_state['df']['ds'] = pd.to_datetime(st.session_state['df']['ds'])
 
-            #     st.session_state['df'].sort_values(by=['unique_id', 'ds'], inplace=True)
+            st.session_state['df'].sort_values(by=['unique_id', 'ds'], inplace=True)
 
-            #     dsFreq = pd.infer_freq(st.session_state['df'][ds])
-                
-            #     if dsFreq is None:
-            #         st.write('Unable to infer frequency of date column, please input manually')
-            #         dsFreq = st.text_input('Frequency', value='M')
-            #         setFreqButton = st.button("Set Freq", type="primary")
-            #         if setFreqButton:
-            #             df = tsf.tsGaps(df, dsFreq)
-            #         else:
-            #             pass
+            if st.session_state['dsInferredFreq'] is None:
+                st.session_state['dsInferredFreq'] = pd.infer_freq(st.session_state['df']['ds'])
+                st.write(f"Frequency: {st.session_state['dsInferredFreq']}")
 
-            
+            print(st.session_state['dsFreq'])
+            if st.session_state['dsInferredFreq'] is None:
+                st.write('Unable to infer frequency of date column, please input manually')
 
-            
+                dsFreq = st.selectbox('Select Freq', list(st.session_state['frequencyDict'].keys()))
 
+                print(dsFreq)
 
-
-            # if st.session_state['df'] is not None:
-            #     st.write(st.session_state['df'].describe())
-
-
-            #     setColumnsButton = st.button('Set Columns')
-
-            #     # https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html
-
-                
-
-            #         # redundant
-            #         # else: 
-            #         #     df = tsf.tsGaps(df, dsFreq)
-            
-            #     st.write(df)
-
-                            
-
-                        
-                    
-
-
-
+                setFreqButton = st.button("Set Freq", type="primary")
+                if setFreqButton:
+                    st.session_state['df'] = tsf.tsGaps(st.session_state['df'], dsFreq)
+                    st.write(st.session_state['df'])
