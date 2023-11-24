@@ -1,21 +1,24 @@
 from databricks import sql
 import os
-import streamlit as st
 
-def connect(host,path,catalogue,token):
+def splitConnString(connString):
+    connString = connString.split(';')        
+    return connString
+
+
+def connect(connString,token):
+    connString = splitConnString(connString)
     connection = sql.connect(
-                        server_hostname = host,
-                        http_path = path,
-                        catalog=catalogue,
+                        server_hostname = connString[0],
+                        http_path = connString[1],
+                        catalog=connString[2],
                         access_token = token)
 
     cursor = connection.cursor()
-    
-
     return connection, cursor
 
-def getColumns(cursor, catalogue, schema, table):
-    cursor.execute(f"SELECT * FROM {catalogue}.{schema}.{table} LIMIT 1")
+def getColumns(cursor, catalogue, table):
+    cursor.execute(f"SELECT * FROM {catalogue}.{table} LIMIT 1")
 
     column_names = [description[0] for description in cursor.description]
 
@@ -33,7 +36,6 @@ def read(connection, cursor, catalogue, schema, table, unique_id,ds,y,filter=Non
         query = f"SELECT {unique_id},{ds}, sum({y}) as y  FROM {catalogue}.{schema}.{table} group by all"
         cursor.execute(query)
 
-    st.write(query)
 
     df = cursor.fetchall()
 
