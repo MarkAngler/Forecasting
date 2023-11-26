@@ -7,7 +7,7 @@
             "id": "root",
             "type": "root",
             "content": {
-                "appName": "My App"
+                "appName": "NixtlaForecasting"
             },
             "parentId": null,
             "position": 0,
@@ -18,7 +18,7 @@
             "id": "c0f99a9e-5004-4e75-a6c6-36f17490b134",
             "type": "page",
             "content": {
-                "pageMode": "compact",
+                "pageMode": "wide",
                 "emptinessColor": "#e9eef1"
             },
             "parentId": "root",
@@ -50,17 +50,6 @@
             "handlers": {},
             "visible": true
         },
-        "0d05bc9f-1655-4d0b-bc9b-c2f4c71a5117": {
-            "id": "0d05bc9f-1655-4d0b-bc9b-c2f4c71a5117",
-            "type": "horizontalstack",
-            "content": {
-                "alignment": "left"
-            },
-            "parentId": "f3777e75-3659-4d44-8ef7-aeec0d06855b",
-            "position": 0,
-            "handlers": {},
-            "visible": true
-        },
         "d4a5e62c-c6fe-49c4-80d4-33862af8727d": {
             "id": "d4a5e62c-c6fe-49c4-80d4-33862af8727d",
             "type": "columns",
@@ -82,7 +71,7 @@
             "parentId": "d4a5e62c-c6fe-49c4-80d4-33862af8727d",
             "position": 2,
             "handlers": {},
-            "visible": true
+            "visible": ""
         },
         "c2519671-9ce7-44e7-ba4e-b0efda9cb20e": {
             "id": "c2519671-9ce7-44e7-ba4e-b0efda9cb20e",
@@ -109,7 +98,7 @@
             "type": "dropdowninput",
             "content": {
                 "label": "Datasource",
-                "options": "{\n  \"databricks\": \"Databricks\",\n  \"parquet\": \"Parquet\"\n}"
+                "options": "{\n  \"databricks\": \"Databricks\"\n}"
             },
             "parentId": "c2519671-9ce7-44e7-ba4e-b0efda9cb20e",
             "position": 0,
@@ -135,18 +124,6 @@
                 "stateRef": "uploadFileStateEle"
             },
             "visible": "uploadFileVisible"
-        },
-        "fkxzu3rj0in26u64": {
-            "id": "fkxzu3rj0in26u64",
-            "type": "dataframe",
-            "content": {
-                "enableSearch": "yes",
-                "enableDownload": "yes"
-            },
-            "parentId": "0d05bc9f-1655-4d0b-bc9b-c2f4c71a5117",
-            "position": 0,
-            "handlers": {},
-            "visible": true
         },
         "5x6tgztlaab04o7o": {
             "id": "5x6tgztlaab04o7o",
@@ -206,7 +183,7 @@
             "parentId": "c2519671-9ce7-44e7-ba4e-b0efda9cb20e",
             "position": 5,
             "handlers": {},
-            "visible": ""
+            "visible": "dbxConnectionMessage"
         },
         "2bgach8503bfulwv": {
             "id": "2bgach8503bfulwv",
@@ -236,16 +213,255 @@
             },
             "visible": "dbxConnected"
         },
-        "zkulxfi9yo0ges6t": {
-            "id": "zkulxfi9yo0ges6t",
+        "1bleli1o4wraaf4c": {
+            "id": "1bleli1o4wraaf4c",
             "type": "dropdowninput",
-            "parentId": "28d3885b-0fb8-4d41-97c6-978540015431",
             "content": {
-                "label": "Input Label"
+                "label": "select ds",
+                "options": "@{TableColumns}"
             },
+            "parentId": "c2519671-9ce7-44e7-ba4e-b0efda9cb20e",
+            "position": 8,
             "handlers": {},
+            "binding": {
+                "eventType": "ss-option-change",
+                "stateRef": "ds"
+            },
+            "visible": "selectColumnsVisible"
+        },
+        "8htzlfaht2pdr0lo": {
+            "id": "8htzlfaht2pdr0lo",
+            "type": "dropdowninput",
+            "content": {
+                "label": "select unique_id",
+                "options": "@{TableColumns}"
+            },
+            "parentId": "c2519671-9ce7-44e7-ba4e-b0efda9cb20e",
+            "position": 9,
+            "handlers": {},
+            "binding": {
+                "eventType": "ss-option-change",
+                "stateRef": "unique_id"
+            },
+            "visible": "selectColumnsVisible"
+        },
+        "806xjuege2zfhm1v": {
+            "id": "806xjuege2zfhm1v",
+            "type": "dropdowninput",
+            "content": {
+                "label": "select y",
+                "options": "@{TableColumns}"
+            },
+            "parentId": "c2519671-9ce7-44e7-ba4e-b0efda9cb20e",
+            "position": 10,
+            "handlers": {},
+            "binding": {
+                "eventType": "ss-option-change",
+                "stateRef": "y"
+            },
+            "visible": "selectColumnsVisible"
+        },
+        "ygonkc3wtcwpoopg": {
+            "id": "ygonkc3wtcwpoopg",
+            "type": "button",
+            "content": {
+                "text": "Build"
+            },
+            "parentId": "c2519671-9ce7-44e7-ba4e-b0efda9cb20e",
+            "position": 11,
+            "handlers": {
+                "ss-click": "dbxGetTableData"
+            },
+            "visible": "selectColumnsVisible"
+        },
+        "efdsaaxdcm77ljxa": {
+            "id": "efdsaaxdcm77ljxa",
+            "type": "selectinput",
+            "content": {
+                "label": "Select Freq",
+                "options": "@{dsFreqSelectionList}"
+            },
+            "parentId": "f3777e75-3659-4d44-8ef7-aeec0d06855b",
             "position": 1,
+            "handlers": {},
+            "binding": {
+                "eventType": "ss-option-change",
+                "stateRef": "dsFreq"
+            },
+            "visible": "dfVisible"
+        },
+        "bhjxl1reolk6t2j5": {
+            "id": "bhjxl1reolk6t2j5",
+            "type": "columns",
+            "content": {},
+            "parentId": "21lwnhaq1em3pet8",
+            "position": 0,
+            "handlers": {},
             "visible": true
+        },
+        "lurv8oadb7apu67y": {
+            "id": "lurv8oadb7apu67y",
+            "type": "column",
+            "content": {
+                "width": "1"
+            },
+            "parentId": "bhjxl1reolk6t2j5",
+            "position": 0,
+            "handlers": {},
+            "visible": true
+        },
+        "m12xdvbyrq23a6yy": {
+            "id": "m12xdvbyrq23a6yy",
+            "type": "button",
+            "content": {
+                "text": "Set"
+            },
+            "parentId": "f3777e75-3659-4d44-8ef7-aeec0d06855b",
+            "position": 2,
+            "handlers": {
+                "ss-click": "setDfFreq"
+            },
+            "visible": "dfVisible"
+        },
+        "6z77q2lg4dzcvh55": {
+            "id": "6z77q2lg4dzcvh55",
+            "type": "columns",
+            "content": {},
+            "parentId": "f3777e75-3659-4d44-8ef7-aeec0d06855b",
+            "position": 3,
+            "handlers": {},
+            "visible": true
+        },
+        "fkxzu3rj0in26u64": {
+            "id": "fkxzu3rj0in26u64",
+            "type": "dataframe",
+            "content": {
+                "enableSearch": "yes",
+                "enableDownload": "yes",
+                "dataframe": "@{df}",
+                "displayRowCount": "10",
+                "showIndex": "yes"
+            },
+            "parentId": "lurv8oadb7apu67y",
+            "position": 0,
+            "handlers": {},
+            "visible": "dfVisible"
+        },
+        "y5fsd9lzuyencov0": {
+            "id": "y5fsd9lzuyencov0",
+            "type": "columns",
+            "content": {},
+            "parentId": "8zpkxvpf04qmj3ju",
+            "position": 0,
+            "handlers": {},
+            "visible": true
+        },
+        "8zpkxvpf04qmj3ju": {
+            "id": "8zpkxvpf04qmj3ju",
+            "type": "column",
+            "content": {
+                "width": "1"
+            },
+            "parentId": "6z77q2lg4dzcvh55",
+            "position": 0,
+            "handlers": {},
+            "visible": true
+        },
+        "56bci1nltywaj09w": {
+            "id": "56bci1nltywaj09w",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center"
+            },
+            "parentId": "y5fsd9lzuyencov0",
+            "position": 0,
+            "handlers": {},
+            "visible": true
+        },
+        "fdjsduxd0p20wo80": {
+            "id": "fdjsduxd0p20wo80",
+            "type": "button",
+            "content": {
+                "text": "Evaluate"
+            },
+            "parentId": "56bci1nltywaj09w",
+            "position": 1,
+            "handlers": {
+                "ss-click": "evaluate"
+            },
+            "visible": "dfVisible"
+        },
+        "xg0jh0b74u1mpa61": {
+            "id": "xg0jh0b74u1mpa61",
+            "type": "numberinput",
+            "content": {
+                "label": "Horizon"
+            },
+            "parentId": "56bci1nltywaj09w",
+            "position": 0,
+            "handlers": {},
+            "binding": {
+                "eventType": "ss-number-change",
+                "stateRef": "horizon"
+            },
+            "visible": "dfVisible"
+        },
+        "cdcood5iuemajujh": {
+            "id": "cdcood5iuemajujh",
+            "type": "columns",
+            "content": {},
+            "parentId": "f3777e75-3659-4d44-8ef7-aeec0d06855b",
+            "position": 0,
+            "handlers": {},
+            "visible": true
+        },
+        "21lwnhaq1em3pet8": {
+            "id": "21lwnhaq1em3pet8",
+            "type": "column",
+            "content": {
+                "width": "1"
+            },
+            "parentId": "cdcood5iuemajujh",
+            "position": 0,
+            "handlers": {},
+            "visible": true
+        },
+        "t1kqeaug91szu4gw": {
+            "id": "t1kqeaug91szu4gw",
+            "type": "dataframe",
+            "content": {
+                "dataframe": "@{dfTestForecast}",
+                "enableSearch": "yes",
+                "enableDownload": "yes"
+            },
+            "parentId": "4r8rc95x5ztaxflz",
+            "position": 0,
+            "handlers": {},
+            "visible": "dfTestForecastVisible"
+        },
+        "4r8rc95x5ztaxflz": {
+            "id": "4r8rc95x5ztaxflz",
+            "type": "column",
+            "content": {
+                "width": "1"
+            },
+            "parentId": "d4a5e62c-c6fe-49c4-80d4-33862af8727d",
+            "position": 3,
+            "handlers": {},
+            "visible": true
+        },
+        "si8xu4at4wko1y8t": {
+            "id": "si8xu4at4wko1y8t",
+            "type": "plotlygraph",
+            "content": {
+                "spec": "@{jsonTestForecast}"
+            },
+            "parentId": "4r8rc95x5ztaxflz",
+            "position": 1,
+            "handlers": {},
+            "visible": "dfTestForecastVisible"
         }
     }
 }
