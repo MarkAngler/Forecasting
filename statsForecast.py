@@ -11,10 +11,11 @@ def statsForecast(df,season_length=12,freq='M'):
 
 
     models = [
-    AutoARIMA(season_length=season_length),
-    HoltWinters(),
-    SeasonalNaive(season_length=season_length),
-    HistoricAverage()]
+    # AutoARIMA(season_length=season_length),
+    # HoltWinters(),
+    # SeasonalNaive(season_length=season_length),
+    HistoricAverage()
+    ]
 
 
 
