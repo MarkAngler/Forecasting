@@ -26,20 +26,20 @@ def getColumns(cursor, catalogue, table):
     return column_names
 
 
-def read(connection, cursor, catalogue, schema, table, unique_id,ds,y,filter=None):
+def read(connection, cursor, catalogue, table, unique_id,ds,y,filter=None):
 
 
     if filter != None:
-        query = f"SELECT * FROM {catalogue}.{schema}.{table} WHERE {filter}"
+        query = f"SELECT * FROM {catalogue}.{table} WHERE {filter}"
         cursor.execute(query)
     else:
-        query = f"SELECT {unique_id},{ds}, sum({y}) as y  FROM {catalogue}.{schema}.{table} group by all"
+        query = f"SELECT {unique_id},{ds}, sum({y}) as y  FROM {catalogue}.{table} group by all"
         cursor.execute(query)
 
 
     df = cursor.fetchall()
 
-    connection.close()
-    cursor.close()
+    # connection.close()
+    # cursor.close()
 
     return df
