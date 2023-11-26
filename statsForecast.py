@@ -1,5 +1,4 @@
 from statsforecast import StatsForecast
-from statsforecast.models import AutoARIMA
 from statsforecast.models import *
 import tsTransforms as tsf
 
